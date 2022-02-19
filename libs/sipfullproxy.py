@@ -14,6 +14,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from calendar import c
 import socketserver
 import re
 import string
@@ -22,6 +23,9 @@ import socket
 import sys
 import time
 import logging
+
+#moje importy
+import SIPCodeInjector as cd
 
 HOST, PORT = '0.0.0.0', 5060
 rx_register = re.compile("^REGISTER")
@@ -352,6 +356,7 @@ class UDPHandler(socketserver.BaseRequestHandler):
                 socket,claddr = self.getSocketInfo(origin)
                 self.data = self.removeRouteHeader()
                 data = self.removeTopVia()
+                data = cd.reformatRequest(data)
                 text = "\r\n".join(data)
                 socket.sendto(text.encode("utf-8"),claddr)
                 showtime()
@@ -428,4 +433,5 @@ if __name__ == "__main__":
     recordroute = "Record-Route: <sip:%s:%d;lr>" % (ipaddress,PORT)
     topvia = "Via: SIP/2.0/UDP %s:%d" % (ipaddress,PORT)
     server = socketserver.UDPServer((HOST, PORT), UDPHandler)
+    cd.replaceCode(486,"Nemam cas")
     server.serve_forever()
