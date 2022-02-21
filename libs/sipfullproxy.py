@@ -25,7 +25,7 @@ import time
 import logging
 
 #moje importy
-import SIPCodeInjector as cd
+import libs.SIPCodeInjector as cd
 
 HOST, PORT = '0.0.0.0', 5060
 rx_register = re.compile("^REGISTER")
