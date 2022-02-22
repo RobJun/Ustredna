@@ -38,7 +38,6 @@ def replaceCode(code : int, text : str):
 def reformatRequest(text : list) -> list:
     header = text[:]
     codeLine = header[0].split(" ")[:2]
-    print(codeLine)
     code = int(codeLine[1])
     if code not in  __codes:
         return text
@@ -46,5 +45,8 @@ def reformatRequest(text : list) -> list:
     header[0] = " ".join(codeLine)
     return header
 
+def getCode(code: int) -> str:
+    if not code in __reCodes: return None
+    return __reCodes[code]
 
     

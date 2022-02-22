@@ -6,7 +6,8 @@ MY_CODES = {
         480 : "Temporarily Unavailable",
         486 : "Ta neotravuj teraz"
 }
+LOGS = 'll.log'
 
 if __name__ == "__main__":
-    server = myWrap.Wrapper(HOST,PORT,MY_CODES)
+    server = myWrap.Wrapper(HOST,PORT,MY_CODES,LOGS)
     server.start()
