@@ -2,6 +2,7 @@
 
 
 #some codes for SIP
+import copy
 
 __codes = {
     100 : "Trying",
@@ -13,22 +14,13 @@ __codes = {
     204 : "No Notification",
 
     480 : "Temporarily Unavailable",
-    486 : "Busy Here"
+    486 : "Busy Here",
+
+    603: "Decline"
 }
 
 
-__reCodes = {
-    100 : "Trying",
-    180 : "Ringing",
-    182 : "Queued",
-
-    200 : "OK",
-    202 : "Accepted",
-    204 : "No Notification",
-
-    480 : "Temporarily Unavailable",
-    486 : "Busy Here"
-}
+__reCodes = copy.deepcopy(__codes)
 
 def replaceCode(code : int, text : str):
     if text in __codes.values() or not code in __codes.keys(): return

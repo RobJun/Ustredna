@@ -1,4 +1,4 @@
-#    https://github.com/tirfil/PySipFullProxy
+
 #    Copyright 2014 Philippe THIRION
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -62,7 +62,7 @@ rx_code = re.compile("^SIP/2.0 ([^ ]*)")
 #rx_invalid = re.compile("^192\.168")
 #rx_invalid2 = re.compile("^10\.")
 #rx_cseq = re.compile("^CSeq:")
-rx_callid = re.compile("Call-ID: (.*)$")
+#rx_callid = re.compile("Call-ID: (.*)$")
 #rx_rr = re.compile("^Record-Route:")
 rx_request_uri = re.compile("^([^ ]*) sip:([^ ]*) SIP/2.0")
 rx_route = re.compile("^Route:")
@@ -175,18 +175,6 @@ class UDPHandler(socketserver.BaseRequestHandler):
                     destination = "%s@%s" %(md.group(1),md.group(2))
                 break
         return destination
-
-    #moja funkcia
-    def getCallID(self,data):
-        callID = "Unknown"
-        for line in data:
-            md = rx_callid.search(line)
-            if md:
-                callID = md.group(1)
-                break
-        return callID
-        
-
                 
     def getOrigin(self):
         origin = ""
@@ -314,7 +302,7 @@ class UDPHandler(socketserver.BaseRequestHandler):
                 text = "\r\n".join(data)
                 socket.sendto(text.encode("utf-8") , claddr)
                 showtime()
-                logs.writeTofile("INVITE: " + origin + " >> " + destination, self.getCallID(data))
+                logs.writeTofile("INVITE: " + origin + " >> " + destination)
                 logging.info("<<< %s" % data[0])
                 logging.debug("---\n<< server send [%d]:\n%s\n---" % (len(text),text))
             else:
@@ -359,9 +347,7 @@ class UDPHandler(socketserver.BaseRequestHandler):
                 self.data = self.addTopVia()
                 data = self.removeRouteHeader()
                 if rx_bye.search(self.data[0]):
-                    logs.writeTofile("BYE: Hovor bol ukonceny: {:s} >> {:s}".format(origin,destination), self.getCallID(data))
-                if rx_cancel.search(self.data[0]):
-                    logs.writeTofile("CANCEL: Zrusene zvonenie: {:s} >> {:s}".format(origin,destination),self.getCallID(data))
+                    logs.writeTofile("BYE: Hovor bol ukonceny: {:s} >> {:s}".format(origin,destination))
                 #insert Record-Route
                 data.insert(1,recordroute)
                 text = "\r\n".join(data)
@@ -391,10 +377,9 @@ class UDPHandler(socketserver.BaseRequestHandler):
                 if code == 200:
                     for d in data:
                         if "cseq" in d.lower() and "invite" in d.lower():
-                            logs.writeTofile("200: hovor bol zodvihnuty: {:s} >> {:s}".format(origin,destination), self.getCallID(data))
-                            break
-                if code == 486 or code == 603:
-                    logs.writeTofile(str(code)+": Preruseny hovor " + destination + "({:s})".format(origin), self.getCallID(data))
+                            logs.writeTofile("200: hovor bol zodvihnuty: {:s} >> {:s}".format(origin,destination))
+                if code == 486:
+                    logs.writeTofile("486: nezodvihol " + destination + "({:s})".format(origin))
                 text = "\r\n".join(data)
                 socket.sendto(text.encode("utf-8"),claddr)
                 showtime()

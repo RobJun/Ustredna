@@ -4,7 +4,8 @@ HOST = '0.0.0.0'
 PORT = 5060
 MY_CODES = {
         480 : "Temporarily Unavailable",
-        486 : "Ta neotravuj teraz"
+        486 : "Ta neotravuj teraz",
+        603 : "Zrušil ta"
 }
 LOGS = 'll.log'
 
