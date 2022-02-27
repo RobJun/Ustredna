@@ -314,7 +314,7 @@ class UDPHandler(socketserver.BaseRequestHandler):
                 text = "\r\n".join(data)
                 socket.sendto(text.encode("utf-8") , claddr)
                 showtime()
-                logs.writeTofile("INVITE: " + origin + " >> " + destination, self.getCallID(data))
+                logs.writeTofile("INVITE: {:s} >>> {:s}".format(origin, destination), self.getCallID(data))
                 logging.info("<<< %s" % data[0])
                 logging.debug("---\n<< server send [%d]:\n%s\n---" % (len(text),text))
             else:
@@ -391,10 +391,10 @@ class UDPHandler(socketserver.BaseRequestHandler):
                 if code == 200:
                     for d in data:
                         if "cseq" in d.lower() and "invite" in d.lower():
-                            logs.writeTofile("200: hovor bol zodvihnuty: {:s} >> {:s}".format(origin,destination), self.getCallID(data))
+                            logs.writeTofile("200: hovor bol zodvihnuty: {:s} <<>> {:s}".format(origin,destination), self.getCallID(data))
                             break
                 if code == 486 or code == 603:
-                    logs.writeTofile(str(code)+": Preruseny hovor " + destination + "({:s})".format(origin), self.getCallID(data))
+                    logs.writeTofile(str(code)+": Preruseny hovor {:s} <<>> {:s} )".format(destination,origin), self.getCallID(data))
                 text = "\r\n".join(data)
                 socket.sendto(text.encode("utf-8"),claddr)
                 showtime()
