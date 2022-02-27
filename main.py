@@ -1,4 +1,4 @@
-import libs.wrapper as myWrap
+import libs
 
 HOST = '0.0.0.0'
 PORT = 5060
@@ -10,5 +10,5 @@ MY_CODES = {
 LOGS = 'll.log'
 
 if __name__ == "__main__":
-    server = myWrap.Wrapper(HOST,PORT,MY_CODES,LOGS)
+    server = libs.Wrapper(HOST,PORT,MY_CODES,LOGS)
     server.start()
